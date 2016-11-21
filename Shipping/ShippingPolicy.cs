@@ -18,6 +18,7 @@ namespace Shipping
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<ShippingPolicyData> mapper)
         {
+            mapper.ConfigureMapping<OrderPlaced>(msg => msg.OrderId).ToSaga(saga => saga.OrderId);
             mapper.ConfigureMapping<OrderBilled>(msg => msg.OrderId).ToSaga(saga => saga.OrderId);
         }
 
