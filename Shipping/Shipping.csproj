@@ -52,9 +52,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Billing\Billing.csproj">
-      <Project>{5b3ded4d-5530-4b8a-87e0-ce11d5a53425}</Project>
-      <Name>Billing</Name>
+    <ProjectReference Include="..\Billing.Messages\Billing.Messages.csproj">
+      <Project>{c43c597d-6cf1-4a44-9d13-d018e8135d08}</Project>
+      <Name>Billing.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Conventions\Conventions.csproj">
       <Project>{1dbb0854-50e0-4774-8085-ee29b132ad7c}</Project>
