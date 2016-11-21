@@ -8,15 +8,13 @@ using Sales.Messages.Commands;
 
 namespace Sales
 {
-    public class Startup : IWantToRunWhenBusStartsAndStops
+    public class Startup : IWantToRunWhenEndpointStartsAndStops
     {
-        public IBus Bus { get; set; }
-
-        public void Start()
+        public async Task Start(IMessageSession session)
         {
             while (true)
             {
-                Console.WriteLine("Press P to place an order, or ESC to quit.");
+                Console.WriteLine("Press P to place an order, or Ctrl+C to quit");
 
                 switch (Console.ReadKey(true).Key)
                 {
@@ -24,19 +22,16 @@ namespace Sales
                         var cmd = new PlaceOrder {OrderId = Guid.NewGuid().ToString()};
 
                         Console.WriteLine($"Sending PlaceOrder: {cmd.OrderId}");
-                        Bus.SendLocal(cmd);
+                        await session.SendLocal(cmd);
                         break;
-
-                    case ConsoleKey.Escape:
-                        Bus.Dispose();
-                        return;
                 }
             }
         }
 
-        public void Stop()
+        public Task Stop(IMessageSession session)
         {
             Console.WriteLine("Shutting down...");
+            return Task.CompletedTask;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Billing
 	*/
     public class EndpointConfig : IConfigureThisEndpoint
     {
-        public void Customize(BusConfiguration configuration)
+        public void Customize(EndpointConfiguration configuration)
         {
         }
     }

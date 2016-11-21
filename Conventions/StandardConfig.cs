@@ -10,7 +10,7 @@ namespace Conventions
 {
     public class StandardConfig : INeedInitialization
     {
-        public void Customize(BusConfiguration configuration)
+        public void Customize(EndpointConfiguration configuration)
         {
             configuration.UseTransport<MsmqTransport>();
 

@@ -9,7 +9,7 @@ namespace Conventions
 {
     public class MessageConventions : INeedInitialization
     {
-        public void Customize(BusConfiguration configuration)
+        public void Customize(EndpointConfiguration configuration)
         {
             configuration.Conventions()
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.EndsWith(".Commands"))

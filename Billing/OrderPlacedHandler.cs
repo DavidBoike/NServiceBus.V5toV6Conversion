@@ -11,15 +11,13 @@ namespace Billing
 {
     public class OrderPlacedHandler : IHandleMessages<OrderPlaced>
     {
-        public IBus Bus { get; set; }
-
-        public void Handle(OrderPlaced message)
+        public async Task Handle(OrderPlaced message, IMessageHandlerContext context)
         {
             Console.WriteLine($"Received OrderPlaced: {message.OrderId}, publishing OrderBilled");
 
             var evt = new OrderBilled {OrderId = message.OrderId};
 
-            Bus.Publish(evt);
+            await context.Publish(evt);
         }
     }
 }

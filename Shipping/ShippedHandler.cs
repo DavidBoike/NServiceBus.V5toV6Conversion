@@ -10,9 +10,10 @@ namespace Shipping
 {
     public class ShippedHandler : IHandleMessages<OrderShipped>
     {
-        public void Handle(OrderShipped message)
+        public Task Handle(OrderShipped message, IMessageHandlerContext context)
         {
             Console.WriteLine($"Received OrderShipped {message.OrderId}");
+            return Task.CompletedTask;
         }
     }
 }

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Billing.Messages.Events;
-using NServiceBus.Saga;
+using NServiceBus;
+using NServiceBus.Sagas;
 using Sales.Messages.Events;
 using Shipping.Messages.Events;
 
@@ -22,33 +23,33 @@ namespace Shipping
             mapper.ConfigureMapping<OrderBilled>(msg => msg.OrderId).ToSaga(saga => saga.OrderId);
         }
 
-        public void Handle(OrderPlaced message)
+        public async Task Handle(OrderPlaced message, IMessageHandlerContext context)
         {
             Data.OrderId = message.OrderId;
             Data.Placed = true;
 
             Console.WriteLine($"Received OrderPlaced {message.OrderId} - should we ship yet?");
 
-            CheckForCompletion();
+            await CheckForCompletion(context);
         }
 
-        public void Handle(OrderBilled message)
+        public async Task Handle(OrderBilled message, IMessageHandlerContext context)
         {
             Data.OrderId = message.OrderId;
             Data.Billed = true;
 
             Console.WriteLine($"Received OrderBilled {message.OrderId} - should we ship yet?");
 
-            CheckForCompletion();
+            await CheckForCompletion(context);
         }
 
-        void CheckForCompletion()
+        async Task CheckForCompletion(IMessageHandlerContext context)
         {
             Console.WriteLine("");
             if (Data.Placed && Data.Billed)
             {
                 Console.WriteLine($"Order Placed & Billed - Shipping {Data.OrderId} in 10s...");
-                this.RequestTimeout<WaitBeforeShipping>(TimeSpan.FromSeconds(10));
+                await this.RequestTimeout<WaitBeforeShipping>(context, TimeSpan.FromSeconds(10));
             }
             else
             {
@@ -56,11 +57,11 @@ namespace Shipping
             }
         }
 
-        public void Timeout(WaitBeforeShipping state)
+        public async Task Timeout(WaitBeforeShipping state, IMessageHandlerContext context)
         {
             Console.WriteLine($"Now shipping OrderId {Data.OrderId}");
 
-            Bus.Publish(new OrderShipped {OrderId = Data.OrderId});
+            await context.Publish(new OrderShipped {OrderId = Data.OrderId});
 
             this.MarkAsComplete();
         }
@@ -68,7 +69,6 @@ namespace Shipping
 
     public class ShippingPolicyData : ContainSagaData
     {
-        [Unique]
         public virtual string OrderId { get; set; }
         public virtual bool Placed { get; set; }
         public virtual bool Billed { get; set; }
