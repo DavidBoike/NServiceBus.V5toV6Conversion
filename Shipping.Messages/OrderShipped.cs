@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shipping.Messages
+namespace Shipping.Messages.Events
 {
     public class OrderShipped
     {

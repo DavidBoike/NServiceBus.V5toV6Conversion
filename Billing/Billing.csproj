@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EndpointConfig.cs" />
+    <Compile Include="OrderPlacedHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +60,10 @@
     <ProjectReference Include="..\Conventions\Conventions.csproj">
       <Project>{1dbb0854-50e0-4774-8085-ee29b132ad7c}</Project>
       <Name>Conventions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sales.Messages\Sales.Messages.csproj">
+      <Project>{086CEF9F-C27D-4026-A875-BED638244E9A}</Project>
+      <Name>Sales.Messages</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
