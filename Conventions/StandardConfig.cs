@@ -18,6 +18,9 @@ namespace Conventions
                 .ConnectionString(@"Server=.\sqlexpress;Database=V5toV6Demo;Trusted_Connection=true;");
 
             configuration.UseSerialization<XmlSerializer>();
+
+            configuration.SendFailedMessagesTo("error");
+            configuration.AuditProcessedMessagesTo("audit");
         }
     }
 }
