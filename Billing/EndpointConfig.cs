@@ -1,16 +1,17 @@
 
+using Sales.Messages.Events;
+
 namespace Billing
 {
     using NServiceBus;
 
-    /*
-		This class configures this endpoint as a Server. More information about how to configure the NServiceBus host
-		can be found here: http://particular.net/articles/the-nservicebus-host
-	*/
     public class EndpointConfig : IConfigureThisEndpoint
     {
         public void Customize(EndpointConfiguration configuration)
         {
+            var routing = configuration.UseTransport<MsmqTransport>().Routing();
+
+            routing.RegisterPublisher(typeof(OrderPlaced).Assembly, "Sales");
         }
     }
 }
